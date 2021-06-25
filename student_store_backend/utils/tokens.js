@@ -22,7 +22,7 @@ const validateToken = (token) => {
 }
 
 module.exports = {
-  generateToken,
+
   createUserJwt,
   validateToken
 }
