@@ -1,5 +1,6 @@
 import ProductCard from "../ProductCard/ProductCard"
 import "./ProductGrid.css"
+import {v4 as uuid } from 'uuid'
 
 export default function ProductGrid({ addToCart, removeFromCart, getQuantityOfItemInCart, products = [] }) {
   return (
@@ -9,7 +10,7 @@ export default function ProductGrid({ addToCart, removeFromCart, getQuantityOfIt
         <div className="grid">
           {products?.map((product) => (
             <ProductCard
-              key={product.id}
+              key={uuid()}
               product={product}
               quantity={getQuantityOfItemInCart(product)}
               addToCart={() => addToCart(product)}

@@ -1,10 +1,12 @@
 const db = require('../db')
 
 class Order {
-  static async listOrdersForUser(){
+  static async listOrdersForUser(user){
     
   }
-  static async createOrder(){
+  // user: email
+  // order: product_id, quantity
+  static async createOrder(user, order){
 
   }
 }

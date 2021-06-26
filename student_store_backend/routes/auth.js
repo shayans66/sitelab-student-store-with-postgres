@@ -19,6 +19,7 @@ router.post("/login", async (req, res, next) => {
 
 router.post("/register", async (req, res, next) => {
   try {
+    console.log('reqbdy ',req.body);
     const user = await User.register({ ...req.body, isAdmin: false })
 
     const token = createUserJwt(user) // make token

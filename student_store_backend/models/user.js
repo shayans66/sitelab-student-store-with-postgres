@@ -8,7 +8,7 @@ class User {
     return {
       id: user.id,
       email: user.email,
-      username: user.username,
+      username: user.email,
       isAdmin: user.is_admin,
       createdAt: user.created_at,
     }
@@ -34,27 +34,28 @@ class User {
   }
 
   static async register(credentials) {
-    const requiredFields = ["email", "password", "username", "isAdmin", 'name']
+    
+
+    const requiredFields = ["email", "password", "isAdmin", 'name']
     requiredFields.forEach((property) => {
     
       if (!credentials.hasOwnProperty(property)) {
         throw new BadRequestError(`Missing ${property} in request body.`)
       }
     })
+    
 
     if (credentials.email.indexOf("@") <= 0) {
       throw new BadRequestError("Invalid email.")
     }
+    console.log('cred ',credentials);
 
     const existingUser = await User.fetchUserByEmail(credentials.email)
     if (existingUser) {
       throw new BadRequestError(`A user already exists with email: ${credentials.email}`)
     }
+    
 
-    const existingUserWithUsername = await User.fetchUserByUsername(credentials.username)
-    if (existingUserWithUsername) {
-      throw new BadRequestError(`A user already exists with username: ${credentials.username}`)
-    }
 
     const hashedPassword = await bcrypt.hash(credentials.password, BCRYPT_WORK_FACTOR)
     const normalizedEmail = credentials.email.toLowerCase()
@@ -64,9 +65,9 @@ class User {
        VALUES ($1, $2, $3, $4, $5)
        RETURNING id, email, username, is_admin, created_at;
       `,
-      [normalizedEmail, hashedPassword, credentials.username, credentials.name, credentials.isAdmin]
+      [normalizedEmail, hashedPassword, credentials.email, credentials.name, credentials.isAdmin]
     )
-    // const requiredFields = ["email", "password", "username", "isAdmin", 'name']
+
     
     const user = userResult.rows[0]
 
@@ -77,29 +78,30 @@ class User {
     if (!email) {
       throw new BadRequestError("No email provided")
     }
-
+    
+    
     const query = `SELECT * FROM users WHERE email = $1`
 
     const result = await db.query(query, [email.toLowerCase()])
-
+    
     const user = result.rows[0]
 
     return user
   }
 
-  static async fetchUserByUsername(username) {
-    if (!username) {
-      throw new BadRequestError("No username provided")
-    }
+  // static async fetchUserByUsername(username) {
+  //   if (!username) {
+  //     throw new BadRequestError("No username provided")
+  //   }
 
-    const query = `SELECT * FROM users WHERE username = $1`
+  //   const query = `SELECT * FROM users WHERE username = $1`
 
-    const result = await db.query(query, [username])
+  //   const result = await db.query(query, [username])
 
-    const user = result.rows[0]
+  //   const user = result.rows[0]
 
-    return user
-  }
+  //   return user
+  // }
 }
 
 module.exports = User
