@@ -8,9 +8,11 @@ router.get(requireAuthenticatedUser, '/', async (req,res,next) => {
   try{
     const { user } = res.locals
     const products = await Order.listOrdersForUser()
-    // return res.status(200).json({
-    //   products 
-    // })
+    return res.status(200).json({
+      orders : {
+        products
+      } 
+    })
   }catch(err){
     next(err)
   }
@@ -18,10 +20,13 @@ router.get(requireAuthenticatedUser, '/', async (req,res,next) => {
 router.post(requireAuthenticatedUser, '/', async (req,res,next) => {
   try{
     const { user } = res.locals
-    const products = await Order.createOrder()
-    // return res.status(200).json({
-    //   products 
-    // })
+    const order = req.body.order
+    const products = await Order.createOrder(user, order)
+
+    // sus
+    return res.status(200).json({
+      order : order 
+    })
   }catch(err){
     next(err)
   }

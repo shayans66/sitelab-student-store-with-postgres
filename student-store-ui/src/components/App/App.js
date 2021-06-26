@@ -31,9 +31,14 @@ export default function App() {
   }
 
   const handleOnCheckout = async () => {
+
+
+
     setIsCheckingOut(true)
 
     try {
+      console.log('cart ',cart);
+
       const res = await axios.post("http://localhost:3001/orders", { order: cart })
       if (res?.data?.order) {
         setOrders((o) => [...res.data.order, ...o])
@@ -54,6 +59,7 @@ export default function App() {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      // console.log('zz');
       setIsFetching(true)
 
       try {

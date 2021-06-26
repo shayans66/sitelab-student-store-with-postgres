@@ -24,6 +24,7 @@ export const removeFromCart = (cart, item) => {
  * @return {Cart}
  */
 export const addToCart = (cart, item) => {
+  console.log('addtocart fnc');
   if (cart.hasOwnProperty(item.id)) {
     return {
       ...cart,

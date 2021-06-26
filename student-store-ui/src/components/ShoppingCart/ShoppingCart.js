@@ -38,6 +38,8 @@ export default function ShoppingCart({
   }, 0)
 
   const onCheckoutSubmit = async () => {
+    console.log('cartt ',cart);
+
     const order = await handleOnCheckout()
     if (order) {
       navigate("/orders")
@@ -45,6 +47,8 @@ export default function ShoppingCart({
   }
 
   const cartHasItems = Boolean(Object.keys(cartMapping).length)
+
+
 
   return (
     <div className="ShoppingCart">
