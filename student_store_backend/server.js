@@ -28,6 +28,7 @@ app.use(morgan("tiny"))
 //    if does attach decoded user to res.locals
 app.use(security.extractUserFromJwt)
 
+
 app.use("/auth", authRoutes)
 app.use("/store", storeRoutes)
 app.use("/orders", ordersRoutes)

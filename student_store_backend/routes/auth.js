@@ -1,9 +1,11 @@
 const express = require("express")
 const User = require("../models/user")
+const Order = require('../models/order')
 const router = express.Router()
 
 const {createUserJwt} = require('../utils/tokens') // create jwt
 const security = require('../middleware/security') // middleware
+const { createOrder } = require("../models/order")
 
 router.post("/login", async (req, res, next) => {
   try {
@@ -34,8 +36,17 @@ router.get('/me', security.requireAuthenticatedUser, async (req,res,next) => {
   try{
     const { email } = res.locals.user
     const user = await User.fetchUserByEmail(email)
+    const orders = createOrder(user)
+
     const publicUser = User.makePublicUser(user)
-    res.status(200).json({user: publicUser})
+
+
+
+
+    res.status(200).json(
+      {user: publicUser},
+      {orders}
+    )
   }catch(err){
     next(err)
   }

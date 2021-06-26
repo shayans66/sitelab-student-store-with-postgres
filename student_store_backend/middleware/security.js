@@ -20,14 +20,15 @@ const jwtFrom = ({ headers }) => {
 // attach user to res obj
 const extractUserFromJwt = (req,res,next) => {
   try{
+
     const token = jwtFrom(req)
     // if token valid
     if(token){
 
-      console.log('poo');
+
       res.locals.user = jwt.verify(token, SECRET_KEY)
 
-      console.log('res ',res.locals.user);
+
     }
     return next()
   }catch(err){
@@ -37,14 +38,15 @@ const extractUserFromJwt = (req,res,next) => {
 
 // verify authed user exists
 const requireAuthenticatedUser = (req,res,next) => {
-
+  console.log('hiii');
   try{
     const { user } = res.locals
-    console.log('user ',user);
+
 
     if(!user?.email){
       throw new UnauthorizedError()
     }
+    next()
   }catch(err){
     return next(err)
   }
