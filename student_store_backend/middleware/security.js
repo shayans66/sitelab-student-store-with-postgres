@@ -5,9 +5,11 @@ const { UnauthorizedError } = require('../utils/errors')
 
 // extract jwt from req header
 const jwtFrom = ({ headers }) => {
-  if(headers?.authorizatoin) {
-    // authorizaotion: 'bearer 4jfdlsjflj3jrlk'
-    const [scheme, token] = headers.authorizatoin.split(' ')
+  if(headers?.authorization) {
+    // authorization: 'bearer 4jfdlsjflj3jrlk'
+    const [scheme, token] = headers.authorization.split(' ')
+
+    
     if(scheme.trim() === 'Bearer' ){
       return token
     }
@@ -22,7 +24,10 @@ const extractUserFromJwt = (req,res,next) => {
     // if token valid
     if(token){
 
+      console.log('poo');
       res.locals.user = jwt.verify(token, SECRET_KEY)
+
+      console.log('res ',res.locals.user);
     }
     return next()
   }catch(err){
@@ -32,8 +37,11 @@ const extractUserFromJwt = (req,res,next) => {
 
 // verify authed user exists
 const requireAuthenticatedUser = (req,res,next) => {
+
   try{
     const { user } = res.locals
+    console.log('user ',user);
+
     if(!user?.email){
       throw new UnauthorizedError()
     }

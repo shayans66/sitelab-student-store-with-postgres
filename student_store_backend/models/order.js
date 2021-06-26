@@ -15,11 +15,12 @@ class Order {
         where email = $1))
         returning id;
     `, [email])
-    
+
     orderId = orderId.rows[0]
+    console.log(orderId);
 
-    
 
+      
 
 
   }

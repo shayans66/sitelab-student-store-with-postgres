@@ -2,22 +2,23 @@ const Order = require('../models/order.js')
 
 const express = require('express')
 const router = express.Router()
-const { requireAuthenticatedUser }= require('../middleware/security')
+const { requireAuthenticatedUser } = require('../middleware/security')
 
-router.get(requireAuthenticatedUser, '/', async (req,res,next) => {
+router.get('/', requireAuthenticatedUser, async (req,res,next) => {
   try{
     const { user } = res.locals
-    const products = await Order.listOrdersForUser()
+    const products = await Order.listOrdersForUser(user)
     return res.status(200).json({
       orders : {
-        products
+        products : products
       } 
     })
   }catch(err){
     next(err)
   }
 })
-router.post(requireAuthenticatedUser, '/', async (req,res,next) => {
+router.post('/', requireAuthenticatedUser, async (req,res,next) => {
+  console.log('post');
   try{
     const { user } = res.locals
     const order = req.body.order
