@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "axios"
 import "./Login.css"
+import apiClient from "../../services/apiClient"
 
 export default function Login({ user, setUser }) {
   const navigate = useNavigate()
@@ -36,19 +37,32 @@ export default function Login({ user, setUser }) {
     setIsProcessing(true)
     setErrors((e) => ({ ...e, form: null }))
 
-    try {
-      const res = await axios.post("http://localhost:3001/auth/login", form)
-      if (res?.data?.user) {
-        setUser(res.data.user)
-      } else {
-        setErrors((e) => ({ ...e, form: "Invalid username/password combination" }))
-      }
-    } catch (err) {
+    const {data, err} = await apiClient.loginUser(form)
+    if (data?.user) {
+      setUser(data.user)
+    } else {
+      setErrors((e) => ({ ...e, form: "Invalid username/password combination" }))
+    }
+    if(err){
       console.log(err)
       setErrors((e) => ({ ...e, form: "Invalid username/password combination" }))
-    } finally {
-      setIsProcessing(false)
     }
+    setIsProcessing(false)
+
+    // try {
+    //   const res = await axios.post("http://localhost:3001/auth/login", form)
+    //   if (res?.data?.user) {
+    //     setUser(res.data.user)
+    //   } else {
+    //     setErrors((e) => ({ ...e, form: "Invalid username/password combination" }))
+    //   }
+    // } catch (err) {
+    //   console.log(err)
+    //   setErrors((e) => ({ ...e, form: "Invalid username/password combination" }))
+    // } finally {
+    //   setIsProcessing(false)
+    // }
+
   }
 
   return (

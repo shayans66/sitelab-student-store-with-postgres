@@ -38,25 +38,45 @@ export default function App() {
 
     setIsCheckingOut(true)
 
-    try {
-      console.log('cart ',cart);
 
-      const res = await axios.post("http://localhost:3001/orders", { order: cart })
-      if (res?.data?.order) {
-        setOrders((o) => [...res.data.order, ...o])
-        setIsCheckingOut(false)
-        setCart({})
-        return res.data.order
-      } else {
-        setError("Error checking out.")
-      }
-    } catch (err) {
-      console.log(err)
-      const message = err?.response?.data?.error?.message
-      setError(message ?? String(err))
-    } finally {
+    console.log('cart ',cart);
+    const {data, error} = await apiClient.postOrder({ order: cart })
+    if(data?.order){
+      setOrders((o) => [...data.order, ...o])
       setIsCheckingOut(false)
+      setCart({})
+      return data.order
+    }else{
+      setError("Error checking out.")
     }
+    if(error){
+      console.log(error)
+      const message = error?.response?.data?.error?.message
+      setError(message ?? String(error))
+    } 
+    setIsCheckingOut(false)
+
+
+    // try {
+      
+
+    //   const res = await axios.post("http://localhost:3001/orders", { order: cart })
+    //   if (res?.data?.order) {
+    //     setOrders((o) => [...res.data.order, ...o])
+    //     setIsCheckingOut(false)
+    //     setCart({})
+    //     return res.data.order
+    //   } else {
+    //     setError("Error checking out.")
+    //   }
+    // } catch (err) {
+    //   console.log(err)
+    //   const message = err?.response?.data?.error?.message
+    //   setError(message ?? String(err))
+    // } finally {
+    //   setIsCheckingOut(false) //
+    // }
+
   }
 
   useEffect(() => {
@@ -64,20 +84,34 @@ export default function App() {
       // console.log('zz');
       setIsFetching(true)
 
-      try {
-        const res = await axios.get("http://localhost:3001/store")
-        if (res?.data?.products) {
-          setProducts(res.data.products)
-        } else {
-          setError("Error fetching products.")
-        }
-      } catch (err) {
+      const {data, err} = await apiClient.getProducts()
+      if (data?.products) {
+        setProducts(data.products)
+      } else {
+        setError("Error fetching products.")
+      }
+      setIsFetching(false)
+      if(err){
         console.log(err)
         const message = err?.response?.data?.error?.message
         setError(message ?? String(err))
-      } finally {
-        setIsFetching(false)
       }
+
+
+      // try {
+      //   const res = await axios.get("http://localhost:3001/store")
+      //   if (res?.data?.products) {
+      //     setProducts(res.data.products)
+      //   } else {
+      //     setError("Error fetching products.")
+      //   }
+      // } catch (err) {
+      //   console.log(err)
+      //   const message = err?.response?.data?.error?.message
+      //   setError(message ?? String(err))
+      // } finally {
+      //   setIsFetching(false)
+      // }
     }
 
     fetchProducts()

@@ -37,8 +37,8 @@ class ApiClient{
   async signupUser(credentials) { 
     return await this.request({ endpoint: "auth/register/", method: "POST", data: credentials }) 
   }
-  async getProducts(credentials) { 
-    return await this.request({ endpoint: "store/", method: "GET", data: credentials }) 
+  async getProducts() { 
+    return await this.request({ endpoint: "store/", method: "GET" }) 
   }
   async postOrder(credentials) { 
     return await this.request({ endpoint: "orders/", method: "POST", data: credentials }) 
