@@ -10,6 +10,8 @@ import ShoppingCart from "../ShoppingCart/ShoppingCart"
 import { removeFromCart, addToCart, getQuantityOfItemInCart, getTotalItemsInCart } from "../../utils/cart"
 import "./App.css"
 
+import apiClient from '../../services/apiClient'
+
 export default function App() {
   const [activeCategory, setActiveCategory] = useState("All Categories")
   const [searchInputValue, setSearchInputValue] = useState("")
