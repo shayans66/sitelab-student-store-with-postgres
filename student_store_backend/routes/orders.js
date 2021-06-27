@@ -21,8 +21,9 @@ router.get('/', requireAuthenticatedUser, async (req,res,next) => {
 router.post('/', requireAuthenticatedUser, async (req,res,next) => {
   console.log('post');
   try{
-    if(!res.locals.hasOwnProperty('user') || !req.body.hasOwnProperty('order'))
+    if( !('user' in res.locals) || !('order' in req.body))
       throw new BadRequestError()
+
 
     const { user } = res.locals
     const order = req.body.order
