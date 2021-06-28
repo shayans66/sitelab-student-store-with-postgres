@@ -28,6 +28,8 @@ export default function App() {
   const handleGetItemQuantity = (item) => getQuantityOfItemInCart(cart, item)
   const handleGetTotalCartItems = () => getTotalItemsInCart(cart)
 
+
+
   const handleOnSearchInputChange = (event) => {
     setSearchInputValue(event.target.value)
   }
@@ -79,8 +81,22 @@ export default function App() {
 
   }
 
+  // take in jwt
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchUser = async () => {
+      const {data, error} = await apiClient.fetchUserFromToken()
+      if(data) setUser(data.user)
+      if(error) setError(error)
+    }
+    const token = localStorage.getItem('student_store_token')
+    if(token){
+      apiClient.setToken(token)
+      fetchUser()
+    }
+  }, [])
+
+  useEffect(() => {
+    const fetchProducts = async () => { 
       // console.log('zz');
       setIsFetching(true)
 

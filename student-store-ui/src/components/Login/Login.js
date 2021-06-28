@@ -40,6 +40,7 @@ export default function Login({ user, setUser }) {
     const {data, err} = await apiClient.loginUser(form)
     if (data?.user) {
       setUser(data.user)
+      apiClient.setToken(data.token)
     } else {
       setErrors((e) => ({ ...e, form: "Invalid username/password combination" }))
     }

@@ -24,6 +24,7 @@ export default function Home({
   const location = useLocation()
 
   useEffect(() => {
+    console.log('location');
     if (location.hash) {
       const el = document.querySelector(location.hash)
       if (el) {

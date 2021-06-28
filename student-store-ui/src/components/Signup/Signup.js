@@ -62,6 +62,7 @@ export default function Signup({ user, setUser }) {
     })
     if (data?.user) {
       setUser(data.user)
+      apiClient.setToken(data.token)
     } else {
       setErrors((e) => ({ ...e, form: "Something went wrong with registration" }))
     }
