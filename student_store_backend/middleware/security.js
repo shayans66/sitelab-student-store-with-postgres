@@ -5,10 +5,14 @@ const { UnauthorizedError } = require('../utils/errors')
 
 // extract jwt from req header
 const jwtFrom = ({ headers }) => {
+
+  
+
   if(headers?.authorization) {
     // authorization: 'bearer 4jfdlsjflj3jrlk'
     const [scheme, token] = headers.authorization.split(' ')
 
+    
     
     if(scheme.trim() === 'Bearer' ){
       return token
@@ -22,10 +26,11 @@ const extractUserFromJwt = (req,res,next) => {
   try{
 
     const token = jwtFrom(req)
+    
     // if token valid
     if(token){
 
-
+      console.log(token);
       res.locals.user = jwt.verify(token, SECRET_KEY)
 
 

@@ -16,6 +16,7 @@ export default function Signup({ user, setUser }) {
   })
 
   useEffect(() => {
+    console.log('signup');
     // if user is already logged in,
     // redirect them to the home page
     if (user?.email) {
@@ -55,21 +56,23 @@ export default function Signup({ user, setUser }) {
       setErrors((e) => ({ ...e, passwordConfirm: null }))
     }
 
-    const {data, err} = apiClient.signupUser({
+    const {data, err} = await apiClient.signupUser({
       name: form.name,
       email: form.email,
       password: form.password,
     })
+    // console.log('err',err);
     if (data?.user) {
       setUser(data.user)
       apiClient.setToken(data.token)
-    } else {
-      setErrors((e) => ({ ...e, form: "Something went wrong with registration" }))
-    }
-    if(err){
-      console.log(err)
+    } 
+    else if(err){
+      // console.log(err)
       const message = err?.response?.data?.error?.message
       setErrors((e) => ({ ...e, form: message ?? String(err) }))
+    }
+    else {
+      setErrors((e) => ({ ...e, form: "Something went wrong with registration" }))
     }
     setIsProcessing(false)
 

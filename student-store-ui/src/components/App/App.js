@@ -83,6 +83,8 @@ export default function App() {
 
   // take in jwt
   useEffect(() => {
+    console.log('fsdjls');
+    
     const fetchUser = async () => {
       const {data, error} = await apiClient.fetchUserFromToken()
       if(data) setUser(data.user)
@@ -101,6 +103,7 @@ export default function App() {
       setIsFetching(true)
 
       const {data, err} = await apiClient.getProducts()
+      console.log('data',data);
       if (data?.products) {
         setProducts(data.products)
       } else {

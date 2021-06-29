@@ -14,6 +14,7 @@ export default function Login({ user, setUser }) {
   })
 
   useEffect(() => {
+    console.log('login');
     // if user is already logged in,
     // redirect them to the home page
     if (user?.email) {

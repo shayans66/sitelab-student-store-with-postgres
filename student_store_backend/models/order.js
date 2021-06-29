@@ -29,6 +29,7 @@ class Order {
     orderId = orderId.rows[0].id
     // console.log(orderId);
 
+    // console.log('order',order);
     for( {product_id, quantity} of order ){
       const quer = db.query(`
         insert into order_details(order_id,product_id,quantity)
